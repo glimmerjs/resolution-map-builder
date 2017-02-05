@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const Plugin = require('broccoli-plugin');
 
-function ModuleMapCreator(src, config, options) {
+function ResolutionMapBuilder(src, config, options) {
   options = options || {};
   Plugin.call(this, [src, config], {
     annotation: options.annotation
@@ -10,17 +10,17 @@ function ModuleMapCreator(src, config, options) {
   this.options = options;
 }
 
-ModuleMapCreator.prototype = Object.create(Plugin.prototype);
+ResolutionMapBuilder.prototype = Object.create(Plugin.prototype);
 
-ModuleMapCreator.prototype.constructor = ModuleMapCreator;
+ResolutionMapBuilder.prototype.constructor = ResolutionMapBuilder;
 
-ModuleMapCreator.prototype.getConfig = function() {
+ResolutionMapBuilder.prototype.getConfig = function() {
   var configPath = path.join(this.inputPaths[1], this.options.configPath);
   var contents = fs.readFileSync(configPath, { encoding: 'utf8' });
   return JSON.parse(contents);
 };
 
-ModuleMapCreator.prototype.build = function() {
+ResolutionMapBuilder.prototype.build = function() {
   function getModuleConfig(config) {
     var moduleConfig = config.moduleConfiguration;
 
@@ -127,4 +127,4 @@ ModuleMapCreator.prototype.build = function() {
   fs.writeFileSync(path.join(this.outputPath, 'config', 'module-map.ts'), contents, { encoding: 'utf8' });
 };
 
-module.exports = ModuleMapCreator;
+module.exports = ResolutionMapBuilder;
