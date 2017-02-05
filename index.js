@@ -1,6 +1,8 @@
+const Plugin = require('broccoli-plugin');
 const fs = require('fs');
 const path = require('path');
-const Plugin = require('broccoli-plugin');
+const walkSync = require('walk-sync');
+const getModuleConfig = require('./lib/get-module-config');
 
 function ResolutionMapBuilder(src, config, options) {
   options = options || {};
@@ -14,43 +16,12 @@ ResolutionMapBuilder.prototype = Object.create(Plugin.prototype);
 
 ResolutionMapBuilder.prototype.constructor = ResolutionMapBuilder;
 
-ResolutionMapBuilder.prototype.getConfig = function() {
-  var configPath = path.join(this.inputPaths[1], this.options.configPath);
-  var contents = fs.readFileSync(configPath, { encoding: 'utf8' });
-  return JSON.parse(contents);
-};
-
 ResolutionMapBuilder.prototype.build = function() {
-  function getModuleConfig(config) {
-    var moduleConfig = config.moduleConfiguration;
+  function specifierFromModule(modulePrefix, moduleConfig, modulePath) {
+    let path;
+    let collectionPath;
 
-    var collectionMap = {};
-    var collectionPaths = [];
-    var collections = moduleConfig.collections;
-    var collectionNames = Object.keys(collections);
-    collectionNames.forEach(function(collectionName) {
-      var collection = collections[collectionName];
-      var fullPath = collectionName;
-      if (collection.group) {
-        fullPath = collection.group + '/' + fullPath;
-      }
-      collectionPaths.push(fullPath);
-      collectionMap[fullPath] = collectionName;
-    });
-
-    moduleConfig.collectionMap = collectionMap;
-    moduleConfig.collectionPaths = collectionPaths;
-
-    // console.log('moduleConfig', moduleConfig);
-
-    return moduleConfig;
-  }
-
-  function specifierFromModule(modulePath, moduleConfig) {
-    var path;
-    var collectionPath;
-
-    for (var i = 0, l = moduleConfig.collectionPaths.length; i < l; i++) {
+    for (let i = 0, l = moduleConfig.collectionPaths.length; i < l; i++) {
       path = moduleConfig.collectionPaths[i];
       if (modulePath.indexOf(path) === 0) {
         collectionPath = path;
@@ -64,12 +35,11 @@ ResolutionMapBuilder.prototype.build = function() {
     } else {
       collectionPath = 'main';
     }
-    var parts = modulePath.split('/');
+    let parts = modulePath.split('/');
 
-    var rootName = 'app';
-    var collectionName = moduleConfig.collectionMap[collectionPath];
+    let collectionName = moduleConfig.collectionMap[collectionPath];
 
-    var name, type, namespace;
+    let name, type, namespace;
     if (parts.length > 1) {
       type = parts.pop();
     }
@@ -78,29 +48,33 @@ ResolutionMapBuilder.prototype.build = function() {
       namespace = parts.join('/');
     }
 
-    var specifierPath = [rootName, collectionName];
+    let specifierPath = [modulePrefix, collectionName];
     if (namespace) {
       specifierPath.push(namespace);
     }
     specifierPath.push(name);
 
-    var specifier = type + ':/' + specifierPath.join('/');
+    let specifier = type + ':/' + specifierPath.join('/');
 
-    // console.log('specifier:', specifier);
+    console.log('specifier:', specifier);
 
     return specifier;
   }
 
-  var config = this.getConfig();
-  var moduleConfig = getModuleConfig(config);
-  var paths = walkSync(this.inputPaths[0]);
-  var modules = [];
-  var moduleImports = [];
-  var mapContents = [];
+  let configPath = path.join(this.inputPaths[1], this.options.configPath);
+  let configContents = fs.readFileSync(configPath, { encoding: 'utf8' });
+  let config = JSON.parse(configContents);
+
+  let modulePrefix = config.modulePrefix;
+  let moduleConfig = getModuleConfig(config);
+  let paths = walkSync(this.inputPaths[0]);
+  let modules = [];
+  let moduleImports = [];
+  let mapContents = [];
 
   paths.forEach(function(entry) {
     if (entry.indexOf('.') > -1) {
-      var module = entry.substring(0, entry.lastIndexOf('.'));
+      let module = entry.substring(0, entry.lastIndexOf('.'));
 
       // filter out index module
       if (module !== 'index' && module !== 'main') {
@@ -109,22 +83,22 @@ ResolutionMapBuilder.prototype.build = function() {
     }
   });
   modules.forEach(function(module) {
-    var specifier = specifierFromModule(module, moduleConfig);
-    var moduleImportPath = '../' + module;
-    var moduleVar = '__' + module.replace(/\//g, '__').replace(/-/g, '_') + '__';
-    var moduleImport = "import { default as " + moduleVar + " } from '" + moduleImportPath + "';";
+    let specifier = specifierFromModule(modulePrefix, moduleConfig, module);
+    let moduleImportPath = '../' + module;
+    let moduleVar = '__' + module.replace(/\//g, '__').replace(/-/g, '_') + '__';
+    let moduleImport = "import { default as " + moduleVar + " } from '" + moduleImportPath + "';";
     moduleImports.push(moduleImport);
     mapContents.push("'" + specifier + "': " + moduleVar);
   });
-  var destPath = path.join(this.outputPath, 'config');
+  let destPath = path.join(this.outputPath, 'config');
   if (!fs.existsSync(destPath)) {
     fs.mkdirSync(destPath);
   }
 
-  var contents = moduleImports.join('\n') + '\n' +
+  let contents = moduleImports.join('\n') + '\n' +
     "export default moduleMap = {" + mapContents.join(',') + "};" + '\n';
 
-  fs.writeFileSync(path.join(this.outputPath, 'config', 'module-map.ts'), contents, { encoding: 'utf8' });
+  fs.writeFileSync(path.join(this.outputPath, 'config', 'module-map.js'), contents, { encoding: 'utf8' });
 };
 
 module.exports = ResolutionMapBuilder;
