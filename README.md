@@ -1,4 +1,4 @@
-# broccoli-resolution-map [![Build Status](https://secure.travis-ci.org/glimmerjs/broccoli-resolution-map.svg?branch=master)](http://travis-ci.org/glimmerjs/broccoli-resolution-map)
+# resolution-map-builder [![Build Status](https://secure.travis-ci.org/glimmerjs/resolution-map-builder.svg?branch=master)](http://travis-ci.org/glimmerjs/resolution-map-builder)
 
 Broccoli plugin for building a resolution map compatible with @glimmerjs/resolver.
 
