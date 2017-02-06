@@ -1,6 +1,10 @@
 # resolution-map-builder [![Build Status](https://secure.travis-ci.org/glimmerjs/resolution-map-builder.svg?branch=master)](http://travis-ci.org/glimmerjs/resolution-map-builder)
 
-Broccoli plugin for building a resolution map compatible with @glimmerjs/resolver.
+A Broccoli plugin for building a resolution map compatible with
+[@glimmerjs/resolver](https://github.com/glimmerjs/glimmer-resolver)
+and the expectations of Ember's
+[module unification RFC](https://github.com/emberjs/rfcs/blob/master/text/0143-module-unification.md).
+
 
 ## Acknowledgements
 
