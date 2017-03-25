@@ -98,7 +98,7 @@ ResolutionMapBuilder.prototype.build = function() {
   }
 
   let contents = moduleImports.join('\n') + '\n' +
-    "export default moduleMap = {" + mapContents.join(',') + "};" + '\n';
+    "export default {" + mapContents.join(',') + "};" + '\n';
 
   fs.writeFileSync(path.join(this.outputPath, 'config', 'module-map.js'), contents, { encoding: 'utf8' });
 };
