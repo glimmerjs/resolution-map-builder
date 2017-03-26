@@ -50,14 +50,19 @@ ResolutionMapBuilder.prototype.build = function() {
     let module = modulePath.substring(0, modulePath.lastIndexOf('.'));
     let extension = modulePath.substring(modulePath.lastIndexOf('.') + 1);
     let specifier = getModuleSpecifier(modulePrefix, moduleConfig, module, extension);
-    let moduleImportPath = '../' + module;
-    let moduleVar = '__' + module.replace(/\//g, '__').replace(/-/g, '_') + '__';
-    let moduleImport = "import { default as " + moduleVar + " } from '" + moduleImportPath + "';";
-    moduleImports.push(moduleImport);
-    mapContents.push("'" + specifier + "': " + moduleVar);
 
-    if (this.options.logSpecifiers) {
-      this.specifiers.push(specifier);
+    // Only process non-null specifiers returned.
+    // Specifiers may be null in the case of an unresolvable collection (e.g. utils)
+    if (specifier) {
+      let moduleImportPath = '../' + module;
+      let moduleVar = '__' + module.replace(/\//g, '__').replace(/-/g, '_') + '__';
+      let moduleImport = "import { default as " + moduleVar + " } from '" + moduleImportPath + "';";
+      moduleImports.push(moduleImport);
+      mapContents.push("'" + specifier + "': " + moduleVar);
+
+      if (this.options.logSpecifiers) {
+        this.specifiers.push(specifier);
+      }
     }
   });
 

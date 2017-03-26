@@ -16,11 +16,16 @@
       "components": {
         "group": "ui",
         "types": ["component", "template"],
-        "defaultType": "component"
+        "defaultType": "component",
+        "privateCollections": "utils"
       },
       "services": {
         "types": ["service"],
-        "defaultType": "service"
+        "defaultType": "service",
+        "privateCollections": "utils"
+      },
+      "utils": {
+        "unresolvable": true
       }
     }
   }

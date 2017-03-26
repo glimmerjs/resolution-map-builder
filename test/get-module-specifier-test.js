@@ -21,17 +21,22 @@ describe('get-module-specifier', function() {
     components: {
       group: 'ui',
       types: ['component', 'template'],
-      defaultType: 'component'
+      defaultType: 'component',
+      privateCollections: ['utils']
     },
     routes: {
       group: 'ui',
       types: ['route', 'controller', 'template'],
       defaultType: 'route',
-      privateCollections: ['components']
+      privateCollections: ['components', 'utils']
     },
     services: {
       types: ['service'],
-      defaultType: 'service'
+      defaultType: 'service',
+      privateCollections: ['utils']
+    },
+    utils: {
+      unresolvable: true
     }
   };
   const config = {
@@ -125,6 +130,14 @@ describe('get-module-specifier', function() {
     let moduleExtension = 'js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/routes/posts/-components/edit-form/text-editor'
+    );
+  });
+
+  it('returns null for modules in unresolvable collections', function() {
+    let modulePath = 'ui/routes/posts/-utils/ignore-me';
+    let moduleExtension = 'js';
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
+      null
     );
   });
 });
