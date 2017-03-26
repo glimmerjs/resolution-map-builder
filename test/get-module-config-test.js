@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const getModuleConfig = require('../lib/get-module-config');
 const assert = require('assert');
