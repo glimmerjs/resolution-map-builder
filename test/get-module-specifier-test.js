@@ -9,6 +9,7 @@ describe('get-module-specifier', function() {
     application: { definitiveCollection: 'main' },
     component: { definitiveCollection: 'components' },
     renderer: { definitiveCollection: 'main' },
+    route: { definitiveCollection: 'routes' },
     service: { definitiveCollection: 'services' },
     template: { definitiveCollection: 'routes' },
     util: { definitiveCollection: 'utils' }
@@ -22,8 +23,15 @@ describe('get-module-specifier', function() {
       types: ['component', 'template'],
       defaultType: 'component'
     },
+    routes: {
+      group: 'ui',
+      types: ['route', 'controller', 'template'],
+      defaultType: 'route',
+      privateCollections: ['components']
+    },
     services: {
-      types: ['service']
+      types: ['service'],
+      defaultType: 'service'
     }
   };
   const config = {
@@ -93,6 +101,30 @@ describe('get-module-specifier', function() {
     let moduleExtension = 'hbs';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'template:/my-app/components/edit-form/text-editor'
+    );
+  });
+
+  it('identifies modules as the default type in private collections', function() {
+    let modulePath = 'ui/routes/posts/-components/edit-form';
+    let moduleExtension = 'js';
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
+      'component:/my-app/routes/posts/-components/edit-form'
+    );
+  });
+
+  it('identifies modules in private collections as the default type for their extension', function() {
+    let modulePath = 'ui/routes/posts/-components/edit-form';
+    let moduleExtension = 'hbs';
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
+      'template:/my-app/routes/posts/-components/edit-form'
+    );
+  });
+
+  it('identifies namespace/name/type modules in a private collection', function() {
+    let modulePath = 'ui/routes/posts/-components/edit-form/text-editor/component';
+    let moduleExtension = 'js';
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
+      'component:/my-app/routes/posts/-components/edit-form/text-editor'
     );
   });
 });
