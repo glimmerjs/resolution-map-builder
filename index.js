@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const walkSync = require('walk-sync');
 const getModuleConfig = require('./lib/get-module-config');
+const getModuleSpecifier = require('./lib/get-module-specifier');
 
 function ResolutionMapBuilder(src, config, options) {
   options = options || {};
@@ -19,71 +20,6 @@ ResolutionMapBuilder.prototype = Object.create(Plugin.prototype);
 ResolutionMapBuilder.prototype.constructor = ResolutionMapBuilder;
 
 ResolutionMapBuilder.prototype.build = function() {
-  function specifierFromModule(modulePrefix, moduleConfig, modulePath, moduleExtension) {
-    let path;
-    let collectionPath;
-
-    // TODO allow this setting in the resolver config
-    const defaultTypesByExtension = {
-      'hbs': 'template'
-    };
-
-    // console.log('path', modulePath, 'extension', moduleExtension);
-
-    for (let i = 0, l = moduleConfig.collectionPaths.length; i < l; i++) {
-      path = moduleConfig.collectionPaths[i];
-      if (modulePath.indexOf(path) === 0) {
-        collectionPath = path;
-        break;
-      }
-    }
-
-    if (collectionPath) {
-      // trim group/collection from module path
-      modulePath = modulePath.substr(collectionPath.length + 1);
-    } else {
-      collectionPath = 'main';
-    }
-
-    let name, type, namespace;
-    let collectionName = moduleConfig.collectionMap[collectionPath];
-    let collection = moduleConfig.collections[collectionName];
-    let parts = modulePath.split('/');
-    let part = parts[parts.length - 1];
-
-    if (collection.types.indexOf(part) > -1) {
-      type = parts.pop();
-      if (parts.length > 0) {
-        name = parts.pop();
-      } else {
-        throw new Error(`The name of module '${modulePath}' could not be identified`);
-      }
-    } else {
-      name = parts.pop();
-      if (defaultTypesByExtension[moduleExtension]) {
-        type = defaultTypesByExtension[moduleExtension];
-      } else if (collection.defaultType) {
-        type = collection.defaultType;
-      } else {
-        throw new Error(`The type of module '${modulePath}' could not be identified`);
-      }
-    }
-
-    if (parts.length > 0) {
-      namespace = parts.join('/');
-    }
-
-    let specifierPath = [modulePrefix, collectionName];
-    if (namespace) {
-      specifierPath.push(namespace);
-    }
-    specifierPath.push(name);
-
-    let specifier = type + ':/' + specifierPath.join('/');
-
-    return specifier;
-  }
-
   let configPath = path.join(this.inputPaths[1], this.options.configPath);
   let configContents = fs.readFileSync(configPath, { encoding: 'utf8' });
   let config = JSON.parse(configContents);
@@ -113,7 +49,7 @@ ResolutionMapBuilder.prototype.build = function() {
   mappedPaths.forEach(modulePath => {
     let module = modulePath.substring(0, modulePath.lastIndexOf('.'));
     let extension = modulePath.substring(modulePath.lastIndexOf('.') + 1);
-    let specifier = specifierFromModule(modulePrefix, moduleConfig, module, extension);
+    let specifier = getModuleSpecifier(modulePrefix, moduleConfig, module, extension);
     let moduleImportPath = '../' + module;
     let moduleVar = '__' + module.replace(/\//g, '__').replace(/-/g, '_') + '__';
     let moduleImport = "import { default as " + moduleVar + " } from '" + moduleImportPath + "';";
