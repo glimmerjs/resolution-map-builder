@@ -25,14 +25,12 @@ describe('get-module-config', function() {
         types: ['service']
       }
     };
-    const config = {
-      moduleConfiguration: {
-        types,
-        collections
-      }
+    const resolverConfig = {
+      types,
+      collections
     };
 
-    let moduleConfig = getModuleConfig(config);
+    let moduleConfig = getModuleConfig(resolverConfig);
 
     assert.ok(moduleConfig, 'moduleConfig returned');
     assert.deepEqual(moduleConfig.types, types, 'types are returned unmodified');

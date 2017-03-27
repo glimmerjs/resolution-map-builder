@@ -39,18 +39,16 @@ describe('get-module-specifier', function() {
       unresolvable: true
     }
   };
-  const config = {
-    moduleConfiguration: {
-      types,
-      collections
-    }
+  const resolverConfig = {
+    types,
+    collections
   };
   const modulePrefix = 'my-app';
 
   let moduleConfig;
 
   beforeEach(function() {
-    moduleConfig = getModuleConfig(config);
+    moduleConfig = getModuleConfig(resolverConfig);
   });
 
   it('identifies named modules in the root of a collection as the default type for that collection', function() {
