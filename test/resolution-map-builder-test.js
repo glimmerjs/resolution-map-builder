@@ -16,14 +16,14 @@ describe('resolution-map-builder', function() {
     return build(mapBuilder)
       .then(result => {
         assert.deepEqual(
-          mapBuilder.specifiers.sort(), 
+          mapBuilder.specifiers.sort(),
           [
             'component:/my-app/components/my-app',
             'template:/my-app/components/my-app',
 
             'component:/my-app/components/text-editor',
             'template:/my-app/components/text-editor',
-            
+
             'component:/my-app/components/my-app/page-banner',
             'template:/my-app/components/my-app/page-banner',
             'component:/my-app/components/my-app/page-banner/titleize'
@@ -53,15 +53,15 @@ describe('resolution-map-builder', function() {
             "group": "ui",
             "types": ["component", "template"],
             "defaultType": "component",
-            "privateCollections": "utils"
+            "privateCollections": ["utils"]
           },
           "utils": {
             "unresolvable": true
           }
         }
       },
-      configPath: 'DOES_NOT_EXIST.json', 
-      logSpecifiers: true 
+      configPath: 'DOES_NOT_EXIST.json',
+      logSpecifiers: true
     };
 
     let mapBuilder = new ResolutionMapBuilder(src, config, options);
@@ -69,14 +69,14 @@ describe('resolution-map-builder', function() {
     return build(mapBuilder)
       .then(result => {
         assert.deepEqual(
-          mapBuilder.specifiers.sort(), 
+          mapBuilder.specifiers.sort(),
           [
             'component:/my-app/components/my-app',
             'template:/my-app/components/my-app',
 
             'component:/my-app/components/text-editor',
             'template:/my-app/components/text-editor',
-            
+
             'component:/my-app/components/my-app/page-banner',
             'template:/my-app/components/my-app/page-banner',
             'component:/my-app/components/my-app/page-banner/titleize'

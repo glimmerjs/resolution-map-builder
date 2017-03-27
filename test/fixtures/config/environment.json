@@ -17,12 +17,7 @@
         "group": "ui",
         "types": ["component", "template"],
         "defaultType": "component",
-        "privateCollections": "utils"
-      },
-      "services": {
-        "types": ["service"],
-        "defaultType": "service",
-        "privateCollections": "utils"
+        "privateCollections": ["utils"]
       },
       "utils": {
         "unresolvable": true
