@@ -36,7 +36,7 @@ describe('resolution-map-builder', function() {
     let src = path.join(process.cwd(), 'test', 'fixtures', 'src');
     let config = path.join(process.cwd(), 'test', 'fixtures', 'config');
     let options = {
-      modulePrefix: 'my-app',
+      defaultModulePrefix: 'my-app',
       defaultModuleConfiguration: {
         "types": {
           "application": { "definitiveCollection": "main" },
