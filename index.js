@@ -35,7 +35,7 @@ ResolutionMapBuilder.prototype.build = function() {
     throw new Error(`The module configuration could not be found. Please add a config file to '${configPath}' and export an object with a 'moduleConfiguration' member.`);
   }
 
-  let modulePrefix = config.modulePrefix || this.options.modulePrefix;
+  let modulePrefix = config.modulePrefix || this.options.defaultModulePrefix;
   if (!modulePrefix) {
     throw new Error(`The module prefix could not be found. Add a config file to '${configPath}' and export an object with a 'modulePrefix' member.`);
   }
