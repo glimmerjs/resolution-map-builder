@@ -20,12 +20,26 @@ ResolutionMapBuilder.prototype = Object.create(Plugin.prototype);
 ResolutionMapBuilder.prototype.constructor = ResolutionMapBuilder;
 
 ResolutionMapBuilder.prototype.build = function() {
+  // Attempt to read config file
   let configPath = path.join(this.inputPaths[1], this.options.configPath);
-  let configContents = fs.readFileSync(configPath, { encoding: 'utf8' });
-  let config = JSON.parse(configContents);
+  let config;
+  if (fs.existsSync(configPath)) {
+    let configContents = fs.readFileSync(configPath, { encoding: 'utf8' });
+    config = JSON.parse(configContents);
+  } else {
+    config = {};
+  }
 
-  let modulePrefix = config.modulePrefix;
-  let moduleConfig = getModuleConfig(config);
+  let moduleConfig = getModuleConfig(config.moduleConfiguration || this.options.defaultModuleConfiguration);
+  if (!moduleConfig) {
+    throw new Error(`The module configuration could not be found. Please add a config file to '${configPath}' and export an object with a 'moduleConfiguration' member.`);
+  }
+
+  let modulePrefix = config.modulePrefix || this.options.modulePrefix;
+  if (!modulePrefix) {
+    throw new Error(`The module prefix could not be found. Add a config file to '${configPath}' and export an object with a 'modulePrefix' member.`);
+  }
+  
   let modulePaths = walkSync(this.inputPaths[0]);
   let mappedPaths = [];
   let moduleImports = [];
