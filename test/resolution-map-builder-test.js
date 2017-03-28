@@ -1,7 +1,7 @@
 'use strict';
 
 const ResolutionMapBuilder = require('..');
-const { build } = require('broccoli-fixture');
+const build = require('broccoli-fixture').build;
 const path = require('path');
 const assert = require('assert');
 
