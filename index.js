@@ -7,6 +7,8 @@ const walkSync = require('walk-sync');
 const getModuleConfig = require('./lib/get-module-config');
 const getModuleSpecifier = require('./lib/get-module-specifier');
 
+const IGNORED_EXTENSIONS = ['', '.md', '.html'];
+
 function ResolutionMapBuilder(src, config, options) {
   options = options || {};
   Plugin.call(this, [src, config], {
@@ -46,13 +48,17 @@ ResolutionMapBuilder.prototype.build = function() {
   let mapContents = [];
 
   modulePaths.forEach(function(modulePath) {
-    if (modulePath.indexOf('.') > -1) {
-      let name = modulePath.substring(0, modulePath.lastIndexOf('.'));
+    let pathParts = path.parse(modulePath);
 
-      // filter out index module
-      if (name !== 'index' && name !== 'main') {
-        mappedPaths.push(modulePath);
-      }
+    if (IGNORED_EXTENSIONS.indexOf(pathParts.ext) > -1) {
+      return;
+    }
+
+    let name = pathParts.dir + '/' + pathParts.name;
+
+    // filter out index module
+    if (name !== 'index' && name !== 'main') {
+      mappedPaths.push(modulePath);
     }
   });
 
