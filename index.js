@@ -54,7 +54,7 @@ ResolutionMapBuilder.prototype.build = function() {
       return;
     }
 
-    let name = pathParts.dir + '/' + pathParts.name;
+    let name = path.join(pathParts.dir, pathParts.name);
 
     // filter out index module
     if (name !== 'index' && name !== 'main') {
