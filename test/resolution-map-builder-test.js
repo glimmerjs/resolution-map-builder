@@ -8,6 +8,7 @@ const assert = require('assert');
 const BroccoliTestHelper = require('broccoli-test-helper');
 const buildOutput = BroccoliTestHelper.buildOutput;
 const createTempDir = BroccoliTestHelper.createTempDir;
+const walkSync = require('walk-sync');
 
 describe('resolution-map-builder', function() {
   let configFixture, srcFixture;
@@ -130,5 +131,30 @@ describe('resolution-map-builder', function() {
         'component:/my-app/components/my-app/page-banner/titleize'
       ].sort()
     );
+  }));
+
+  it('emits a .d.ts file', co.wrap(function* () {
+    let options = { configPath: 'environment.json', logSpecifiers: true };
+
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path() + '/src', configFixture.path(), options);
+
+    let output = yield buildOutput(mapBuilder);
+
+    assert.ok(output.read().config['module-map.d.ts'], 'module-map.d.ts was present');
+  }));
+
+  it('emits files in correct locations', co.wrap(function* () {
+    let options = { configPath: 'environment.json' };
+
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path() + '/src', configFixture.path(), options);
+
+    let output = yield buildOutput(mapBuilder);
+
+    let entries = walkSync(output.path(), { directories: false });
+
+    assert.deepEqual(entries, [
+      'config/module-map.d.ts',
+      'config/module-map.js'
+    ]);
   }));
 });
