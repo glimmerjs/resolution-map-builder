@@ -83,6 +83,29 @@ describe('resolution-map-builder', function() {
     );
   }));
 
+  it('can read a config file, parse modules at specified path, and log specifiers (if requested)', co.wrap(function* () {
+    let options = { configPath: 'environment.json', baseDir: 'src', logSpecifiers: true };
+
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path(), configFixture.path(), options);
+
+    yield buildOutput(mapBuilder);
+
+    assert.deepEqual(
+      mapBuilder.specifiers.sort(),
+      [
+        'component:/my-app/components/my-app',
+        'template:/my-app/components/my-app',
+
+        'component:/my-app/components/text-editor',
+        'template:/my-app/components/text-editor',
+
+        'component:/my-app/components/my-app/page-banner',
+        'template:/my-app/components/my-app/page-banner',
+        'component:/my-app/components/my-app/page-banner/titleize'
+      ].sort()
+    );
+  }));
+
   it('can use config options if no config file exists', co.wrap(function* () {
     let options = {
       defaultModulePrefix: 'my-app',
