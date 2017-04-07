@@ -8,9 +8,9 @@
   ],
   "repository": "https://github.com/glimmerjs/resolution-map-builder",
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test --recursive"
   },
   "keywords": [
     "broccoli-plugin"
@@ -20,9 +20,10 @@
     "walk-sync": "^0.3.1"
   },
   "devDependencies": {
-    "broccoli-fixture": "^1.0.0",
-    "broccoli-funnel": "^1.1.0",
+    "broccoli-test-helper": "^1.1.0",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "co": "^4.6.0",
+    "mocha": "^3.2.0",
+    "mocha-eslint": "^3.0.1"
   }
 }
