@@ -10,7 +10,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test --recursive"
   },
   "keywords": [
     "broccoli-plugin"
@@ -22,7 +22,9 @@
   "devDependencies": {
     "broccoli-fixture": "^1.0.0",
     "broccoli-funnel": "^1.1.0",
+    "broccoli-test-helper": "^1.1.0",
     "chai": "^3.5.0",
+    "co": "^4.6.0",
     "mocha": "^3.2.0",
     "mocha-eslint": "^3.0.1"
   }
