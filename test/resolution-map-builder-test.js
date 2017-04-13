@@ -33,6 +33,7 @@ describe('resolution-map-builder', function() {
                     "ignore-me.ts": ""
                   },
                   "component.ts": "",
+                  "ignore-me.d.ts": "",
                   "template.hbs": "",
                   "titleize.ts": ""
                 },
