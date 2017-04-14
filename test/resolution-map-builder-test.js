@@ -211,6 +211,25 @@ describe('resolution-map-builder', function() {
       .then(() => assert.ok(false, 'should have errored'));
   }));
 
+  it('does not error if two files compiled to null specifiers', co.wrap(function* () {
+    let options = { configPath: 'environment.json', logSpecifiers: true };
+
+    yield srcFixture.dispose();
+
+    srcFixture.write({
+      "src": {
+        "utils": {
+          "thing.ts": '// here',
+          "other.ts": '// stuff'
+        }
+      }
+    });
+
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path() + '/src', configFixture.path(), options);
+
+    yield buildOutput(mapBuilder);
+  }));
+
   describe('getModuleIdentifier', function() {
     it('does not reuse the same variable name', function() {
       let seen = { 'foo': 'foo' };
