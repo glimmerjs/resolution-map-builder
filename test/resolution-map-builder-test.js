@@ -1,6 +1,7 @@
 'use strict';
 
 const ResolutionMapBuilder = require('..');
+const getModuleIdentifier = ResolutionMapBuilder._getModuleIdentifier;
 const path = require('path');
 const fs = require('fs');
 const co = require('co');
@@ -208,4 +209,32 @@ describe('resolution-map-builder', function() {
       })
       .then(() => assert.ok(false, 'should have errored'));
   }));
+
+  describe('getModuleIdentifier', function() {
+    it('does not reuse the same variable name', function() {
+      let seen = { 'foo': 'foo' };
+      let actual = getModuleIdentifier(seen, 'foo');
+
+      assert.notEqual(actual, '__foo__', 'does not create an already seen token');
+    });
+
+    it('does not make symbols that are invalid js identifiers', function() {
+      let seen = { };
+      let bizarreValues = [
+        '#foo',
+        '.derp',
+        ':wat',
+        'huzzaa/lola@/foo',
+        'chinkies/flerbity/%ads'
+      ];
+
+      bizarreValues.forEach((modulePath) => {
+        let identifier = getModuleIdentifier(seen, modulePath);
+        assert.doesNotThrow(
+          () => new Function(`var ${identifier} = true; return ${identifier};`),
+          `Generating an identifier for ${modulePath} should not throw`
+        );
+      });
+    });
+  });
 });
