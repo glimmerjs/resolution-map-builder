@@ -181,4 +181,31 @@ describe('resolution-map-builder', function() {
       'config/module-map.js'
     ]);
   }));
+
+  it('errors if two files compiled to the same specifiers', co.wrap(function* () {
+    let options = { configPath: 'environment.json', logSpecifiers: true };
+
+    yield srcFixture.dispose();
+
+    srcFixture.write({
+      "src": {
+        "ui": {
+          "components": {
+            "foo-bar.ts": 'export default class { }',
+            "foo-bar": {
+              "component.ts": 'export default class { }'
+            }
+          }
+        }
+      }
+    });
+
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path() + '/src', configFixture.path(), options);
+
+    buildOutput(mapBuilder)
+      .catch(error => {
+        assert.equal(error.name, 'Both `ui/components/foo-bar.ts` and `ui/components/foo-bar/component.ts` represent component:/my-app/components/foo-bar, please rename one to remove the collision.');
+      })
+      .then(() => assert.ok(false, 'should have errored'));
+  }));
 });
