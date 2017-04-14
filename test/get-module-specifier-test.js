@@ -53,7 +53,7 @@ describe('get-module-specifier', function() {
 
   it('identifies named modules in the root of a collection as the default type for that collection', function() {
     let modulePath = 'ui/components/text-editor';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/components/text-editor'
     );
@@ -61,7 +61,7 @@ describe('get-module-specifier', function() {
 
   it('identifies named modules in the root of a collection as the default type for their extension', function() {
     let modulePath = 'ui/components/text-editor';
-    let moduleExtension = 'hbs';
+    let moduleExtension = '.hbs';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'template:/my-app/components/text-editor'
     );
@@ -69,7 +69,7 @@ describe('get-module-specifier', function() {
 
   it('identifies name/type modules in a collection', function() {
     let modulePath = 'ui/components/text-editor/component';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/components/text-editor'
     );
@@ -77,7 +77,7 @@ describe('get-module-specifier', function() {
 
   it('identifies name/type modules with an extension that has a default type', function() {
     let modulePath = 'ui/components/text-editor/template';
-    let moduleExtension = 'hbs';
+    let moduleExtension = '.hbs';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'template:/my-app/components/text-editor'
     );
@@ -85,7 +85,7 @@ describe('get-module-specifier', function() {
 
   it('identifies namespace/name/type modules in a collection', function() {
     let modulePath = 'ui/components/edit-form/text-editor/component';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/components/edit-form/text-editor'
     );
@@ -93,7 +93,7 @@ describe('get-module-specifier', function() {
 
   it('identifies namespace/name modules as the default type for a collection', function() {
     let modulePath = 'ui/components/edit-form/text-editor';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/components/edit-form/text-editor'
     );
@@ -101,7 +101,7 @@ describe('get-module-specifier', function() {
 
   it('identifies namespace/name modules as the default type for their extension', function() {
     let modulePath = 'ui/components/edit-form/text-editor';
-    let moduleExtension = 'hbs';
+    let moduleExtension = '.hbs';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'template:/my-app/components/edit-form/text-editor'
     );
@@ -109,7 +109,7 @@ describe('get-module-specifier', function() {
 
   it('identifies modules as the default type in private collections', function() {
     let modulePath = 'ui/routes/posts/-components/edit-form';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/routes/posts/-components/edit-form'
     );
@@ -117,7 +117,7 @@ describe('get-module-specifier', function() {
 
   it('identifies modules in private collections as the default type for their extension', function() {
     let modulePath = 'ui/routes/posts/-components/edit-form';
-    let moduleExtension = 'hbs';
+    let moduleExtension = '.hbs';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'template:/my-app/routes/posts/-components/edit-form'
     );
@@ -125,7 +125,7 @@ describe('get-module-specifier', function() {
 
   it('identifies namespace/name/type modules in a private collection', function() {
     let modulePath = 'ui/routes/posts/-components/edit-form/text-editor/component';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       'component:/my-app/routes/posts/-components/edit-form/text-editor'
     );
@@ -133,7 +133,7 @@ describe('get-module-specifier', function() {
 
   it('returns null for modules in unresolvable collections', function() {
     let modulePath = 'ui/routes/posts/-utils/ignore-me';
-    let moduleExtension = 'js';
+    let moduleExtension = '.js';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath, moduleExtension),
       null
     );
