@@ -1,6 +1,6 @@
 {
   "name": "@glimmer/resolution-map-builder",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Broccoli plugin for building a resolution map compatible with the @glimmerjs/resolver.",
   "contributors": [
     "Dan Gebhardt <dan@cerebris.com>",
