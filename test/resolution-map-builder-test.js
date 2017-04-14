@@ -2,6 +2,7 @@
 
 const ResolutionMapBuilder = require('..');
 const getModuleIdentifier = ResolutionMapBuilder._getModuleIdentifier;
+const shouldIgnore = ResolutionMapBuilder._shouldIgnore;
 const path = require('path');
 const fs = require('fs');
 const co = require('co');
@@ -236,5 +237,29 @@ describe('resolution-map-builder', function() {
         );
       });
     });
+  });
+
+  describe('shouldIgnore', function() {
+    function generateTest(modulePath, expected) {
+      it(`${expected ? 'should ignore' : 'should not ignore'} ${modulePath}`, function() {
+        let pathParts = path.parse(modulePath);
+
+        assert.equal(shouldIgnore(pathParts), expected);
+      });
+    }
+
+    let cases = {
+      'src/ui/components/foo-bar.ts': false,
+      'src/ui/components/.foo-bar.ts': true,
+      'src/ui/components/other.d.ts': true,
+      'src/ui/components/foo-bar.md': true,
+      'src/ui/index.html': true,
+      'src/ui/components/README.md': true,
+      'src/ui/.eslintrc': true
+    };
+
+    for (let modulePath in cases) {
+      generateTest(modulePath, cases[modulePath]);
+    }
   });
 });
