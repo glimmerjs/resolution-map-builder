@@ -59,6 +59,17 @@ describe('get-module-specifier', function() {
     );
   });
 
+  it('identifies named module with a dot delimeter', function() {
+    let moduleExtension = '.hbs';
+
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, 'ui/components/text-editor.glimmer', moduleExtension),
+      'template:/my-app/components/text-editor'
+    );
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, 'ui/routes/posts/-components/edit-form.glimmer', moduleExtension),
+      'template:/my-app/routes/posts/-components/edit-form'
+    );
+  });
+
   it('identifies named modules in the root of a collection as the default type for their extension', function() {
     let modulePath = 'ui/components/text-editor';
     let moduleExtension = '.hbs';

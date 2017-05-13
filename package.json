@@ -10,7 +10,8 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha test --recursive"
+    "test": "mocha test --recursive",
+    "test:debug": "mocha --no-timeouts debug"
   },
   "keywords": [
     "broccoli-plugin"
