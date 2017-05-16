@@ -1,5 +1,7 @@
-const { buildResolutionMap } = require('..');
-const { createTempDir } = require('broccoli-test-helper');
+'use strict';
+
+const buildResolutionMap = require('..').buildResolutionMap;
+const createTempDir = require('broccoli-test-helper').createTempDir;
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');

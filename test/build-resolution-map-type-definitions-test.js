@@ -1,4 +1,6 @@
-const { buildResolutionMapTypeDefinitions } = require('..');
+'use strict';
+
+const buildResolutionMapTypeDefinitions = require('..').buildResolutionMapTypeDefinitions;
 const assert = require('assert');
 
 describe('buildResolutionMapTypeDefinitions', function() {
