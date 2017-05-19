@@ -87,7 +87,7 @@ describe('resolution-map-builder', function() {
   }));
 
   it('can read a config file, parse modules at specified path, and log specifiers (if requested)', co.wrap(function* () {
-    let options = { configPath: 'environment.json', baseDir: 'src', logSpecifiers: true };
+    let options = { configPath: 'environment.json', srcDir: 'src', logSpecifiers: true };
 
     let mapBuilder = new ResolutionMapBuilder(srcFixture.path(), configFixture.path(), options);
 
@@ -212,7 +212,7 @@ describe('resolution-map-builder', function() {
   }));
 
   it('does not error if two files compiled to null specifiers', co.wrap(function* () {
-    let options = { configPath: 'environment.json', logSpecifiers: true };
+    let options = { configPath: 'environment.json', srcDir: 'src', logSpecifiers: true };
 
     yield srcFixture.dispose();
 
@@ -225,7 +225,7 @@ describe('resolution-map-builder', function() {
       }
     });
 
-    let mapBuilder = new ResolutionMapBuilder(srcFixture.path() + '/src', configFixture.path(), options);
+    let mapBuilder = new ResolutionMapBuilder(srcFixture.path(), configFixture.path(), options);
 
     yield buildOutput(mapBuilder);
   }));
