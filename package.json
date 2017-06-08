@@ -9,6 +9,7 @@
   "repository": "https://github.com/glimmerjs/resolution-map-builder",
   "license": "MIT",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "mocha test --recursive"
   },
