@@ -40,9 +40,7 @@ describe('resolution-map-builder', function() {
                   "titleize.ts": ""
                 },
                 "template.hbs": ""
-              },
-              "text-editor.hbs": "",
-              "text-editor.ts": ""
+              }
             },
             "index.html": "<html>\n    <head></head>\n    <body></body>\n</html>\n"
           }
@@ -76,9 +74,6 @@ describe('resolution-map-builder', function() {
         'component:/my-app/components/my-app',
         'template:/my-app/components/my-app',
 
-        'component:/my-app/components/text-editor',
-        'template:/my-app/components/text-editor',
-
         'component:/my-app/components/my-app/page-banner',
         'template:/my-app/components/my-app/page-banner',
         'component:/my-app/components/my-app/page-banner/titleize'
@@ -98,9 +93,6 @@ describe('resolution-map-builder', function() {
       [
         'component:/my-app/components/my-app',
         'template:/my-app/components/my-app',
-
-        'component:/my-app/components/text-editor',
-        'template:/my-app/components/text-editor',
 
         'component:/my-app/components/my-app/page-banner',
         'template:/my-app/components/my-app/page-banner',
@@ -148,9 +140,6 @@ describe('resolution-map-builder', function() {
       [
         'component:/my-app/components/my-app',
         'template:/my-app/components/my-app',
-
-        'component:/my-app/components/text-editor',
-        'template:/my-app/components/text-editor',
 
         'component:/my-app/components/my-app/page-banner',
         'template:/my-app/components/my-app/page-banner',

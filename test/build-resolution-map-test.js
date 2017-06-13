@@ -32,9 +32,7 @@ describe('buildResolutionMap', function () {
                   "titleize.ts": ""
                 },
                 "template.hbs": ""
-              },
-              "text-editor.hbs": "",
-              "text-editor.ts": ""
+              }
             },
             "index.html": "<html>\n    <head></head>\n    <body></body>\n</html>\n"
           }
@@ -55,13 +53,11 @@ describe('buildResolutionMap', function () {
     });
 
     assert.deepEqual(map, {
-      'component:/my-app/components/my-app': 'ui/components/my-app/component.ts',
-      'component:/my-app/components/my-app/page-banner': 'ui/components/my-app/page-banner/component.ts',
-      'template:/my-app/components/my-app/page-banner': 'ui/components/my-app/page-banner/template.hbs',
-      'component:/my-app/components/my-app/page-banner/titleize': 'ui/components/my-app/page-banner/titleize.ts',
-      'template:/my-app/components/my-app': 'ui/components/my-app/template.hbs',
-      'template:/my-app/components/text-editor': 'ui/components/text-editor.hbs',
-      'component:/my-app/components/text-editor': 'ui/components/text-editor.ts'
+      'component:/my-app/components/my-app': 'ui/components/my-app/component',
+      'component:/my-app/components/my-app/page-banner': 'ui/components/my-app/page-banner/component',
+      'template:/my-app/components/my-app/page-banner': 'ui/components/my-app/page-banner/template',
+      'component:/my-app/components/my-app/page-banner/titleize': 'ui/components/my-app/page-banner/titleize',
+      'template:/my-app/components/my-app': 'ui/components/my-app/template',
     })
   });
 });
