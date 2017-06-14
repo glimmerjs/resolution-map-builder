@@ -8,6 +8,7 @@ describe('get-module-specifier', function() {
   const types = {
     application: { definitiveCollection: 'main' },
     component: { definitiveCollection: 'components' },
+    'component-test': { unresolvable: true },
     renderer: { definitiveCollection: 'main' },
     route: { definitiveCollection: 'routes' },
     service: { definitiveCollection: 'services' },
@@ -20,7 +21,7 @@ describe('get-module-specifier', function() {
     },
     components: {
       group: 'ui',
-      types: ['component', 'template'],
+      types: ['component', 'template', 'component-test'],
       defaultType: 'component',
       privateCollections: ['utils']
     },
@@ -95,6 +96,13 @@ describe('get-module-specifier', function() {
 
   it('returns null for modules in unresolvable collections', function() {
     let modulePath = 'ui/routes/posts/-utils/ignore-me';
+    assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath),
+      null
+    );
+  });
+
+  it('returns null for modules of unresolvable types', function() {
+    let modulePath = 'ui/components/post/component-test';
     assert.equal(getModuleSpecifier(modulePrefix, moduleConfig, modulePath),
       null
     );
